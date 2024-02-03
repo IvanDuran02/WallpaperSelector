@@ -2,19 +2,20 @@ package main
 
 import (
 	"fmt"
-	"github.com/manifoldco/promptui"
 	"io/ioutil"
 	"os"
 	"os/exec"
-  "path/filepath"
+	"path/filepath"
 	"sort"
-  "strings"
+	"strings"
+
+	"github.com/manifoldco/promptui"
 )
 
-func ChangeWallpaper(file string) {
+func ChangeWallpaper(file string, head int) {
 	// Separate the command and its arguments
 	command := "nitrogen"
-	args := []string{"--set-scaled", "/home/popo/Pictures/Wallpapers/" + file, "--head=0"}
+	args := []string{"--set-scaled", "/home/popo/Pictures/Wallpapers/" + file, "--head=" + fmt.Sprint(head)}
 
 	// Create the exec.Cmd object
 	cmd := exec.Command(command, args...)
@@ -48,6 +49,23 @@ func main() {
 	// Sort the files for a cleaner display
 	sort.Strings(files)
 
+  displays := FindDisplays() 
+  displayPrompt := promptui.Select{
+    Label: "Select a monitor",
+    Items: displays,
+  }
+  _, selectedDisplay, err := displayPrompt.Run()
+  if err != nil {
+    fmt.Println("Prompt failed:", err)
+    return
+  }
+
+  head := 0
+  for i, display := range displays {
+    if selectedDisplay == display {
+     head = i 
+    }
+  }
 	// Create a prompt with the file options
 	prompt := promptui.Select{
 		Label: "Select a file",
@@ -62,7 +80,7 @@ func main() {
 	}
 
 	// fmt.Println("You selected:", result)
-	ChangeWallpaper(result)
+	ChangeWallpaper(result, head)
 }
 
 func listJPGFiles(dir string, prefix string) ([]string, error) {
@@ -72,7 +90,7 @@ func listJPGFiles(dir string, prefix string) ([]string, error) {
 	fileInfos, err := ioutil.ReadDir(dir)
 	if err != nil {
 		return nil, err
-	}
+  }
 
 	// Extract file names from fileInfos
 	for _, fileInfo := range fileInfos {
@@ -96,4 +114,3 @@ func listJPGFiles(dir string, prefix string) ([]string, error) {
 
 	return files, nil
 }
-
