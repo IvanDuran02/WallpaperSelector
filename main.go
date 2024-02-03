@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -19,7 +18,7 @@ func ChangeWallpaper(file string, head int) {
 
 	// Create the exec.Cmd object
 	cmd := exec.Command(command, args...)
-  fmt.Println(cmd)
+	fmt.Println(cmd)
 
 	// Set the command's stdout to the current process's stdout
 	cmd.Stdout = os.Stdout
@@ -33,7 +32,7 @@ func ChangeWallpaper(file string, head int) {
 
 func main() {
 	// Get the current directory
-	currentDir, err := filepath.Abs("/home/popo/Pictures/Wallpapers") 
+	currentDir, err := filepath.Abs("/home/popo/Pictures/Wallpapers")
 	if err != nil {
 		fmt.Println("Error getting current directory:", err)
 		return
@@ -49,23 +48,23 @@ func main() {
 	// Sort the files for a cleaner display
 	sort.Strings(files)
 
-  displays := FindDisplays() 
-  displayPrompt := promptui.Select{
-    Label: "Select a monitor",
-    Items: displays,
-  }
-  _, selectedDisplay, err := displayPrompt.Run()
-  if err != nil {
-    fmt.Println("Prompt failed:", err)
-    return
-  }
+	displays := FindDisplays()
+	displayPrompt := promptui.Select{
+		Label: "Select a monitor",
+		Items: displays,
+	}
+	_, selectedDisplay, err := displayPrompt.Run()
+	if err != nil {
+		fmt.Println("Prompt failed:", err)
+		return
+	}
 
-  head := 0
-  for i, display := range displays {
-    if selectedDisplay == display {
-     head = i 
-    }
-  }
+	head := 0
+	for i, display := range displays {
+		if selectedDisplay == display {
+			head = i
+		}
+	}
 	// Create a prompt with the file options
 	prompt := promptui.Select{
 		Label: "Select a file",
@@ -87,10 +86,10 @@ func listJPGFiles(dir string, prefix string) ([]string, error) {
 	var files []string
 
 	// Read the directory
-	fileInfos, err := ioutil.ReadDir(dir)
+	fileInfos, err := os.ReadDir(dir)
 	if err != nil {
 		return nil, err
-  }
+	}
 
 	// Extract file names from fileInfos
 	for _, fileInfo := range fileInfos {

@@ -18,7 +18,7 @@ func findConnectedWords(input string) []string {
 	var connectedWords []string
 	for _, match := range matches {
 		if len(match) >= 2 {
-			connectedWords = append(connectedWords, match[1])
+			connectedWords = append(connectedWords, "󰍹 " + match[1])
 		}
 	}
 
