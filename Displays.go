@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-  "os/exec"
-  "regexp"
+	"os/exec"
+	"regexp"
 )
 
 // Search through string to return display port names...
@@ -18,7 +18,7 @@ func findConnectedWords(input string) []string {
 	var connectedWords []string
 	for _, match := range matches {
 		if len(match) >= 2 {
-			connectedWords = append(connectedWords, "󰍹 " + match[1])
+			connectedWords = append(connectedWords, "󰍹 "+match[1])
 		}
 	}
 
@@ -27,19 +27,18 @@ func findConnectedWords(input string) []string {
 
 // Finds connected displays
 func FindDisplays() []string {
-  command := "xrandr" 
-  args := []string{"--query"}
-  displays := exec.Command(command, args...) 
+	command := "xrandr"
+	args := []string{"--query"}
+	displays := exec.Command(command, args...)
 
-  // Captures the output of the command
-  output, err := displays.CombinedOutput()
-  if err != nil {
-    // Print error and return empty string
-    fmt.Println("Error executing:", err)
-    return []string{}
-  }
-  connectedDisplays := findConnectedWords(string(output))
- 
-  return connectedDisplays
+	// Captures the output of the command
+	output, err := displays.CombinedOutput()
+	if err != nil {
+		// Print error and return empty string
+		fmt.Println("Error executing:", err)
+		return []string{}
+	}
+	connectedDisplays := findConnectedWords(string(output))
+
+	return connectedDisplays
 }
-

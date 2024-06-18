@@ -66,20 +66,21 @@ func main() {
 		}
 	}
 	// Create a prompt with the file options
-	prompt := promptui.Select{
-		Label: "Select a file",
-		Items: files,
+	for {
+		prompt := promptui.Select{
+			Label: "Select a file",
+			Items: files,
+		}
+		// Prompt the user to select a file
+		_, result, err := prompt.Run()
+		if err != nil {
+			fmt.Println("Prompt failed:", err)
+			return
+		}
+		// fmt.Println("You selected:", result)
+		ChangeWallpaper(result, head)
 	}
 
-	// Prompt the user to select a file
-	_, result, err := prompt.Run()
-	if err != nil {
-		fmt.Println("Prompt failed:", err)
-		return
-	}
-
-	// fmt.Println("You selected:", result)
-	ChangeWallpaper(result, head)
 }
 
 func listJPGFiles(dir string, prefix string) ([]string, error) {
